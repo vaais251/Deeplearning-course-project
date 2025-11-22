@@ -63,6 +63,16 @@ export const CURRICULUM: Lesson[] = [
     duration: '2h 06m',
     tags: ['Calculus', 'Implementation']
   },
+  {
+    id: 'blog-3',
+    title: 'Software 2.0',
+    description: 'Neural networks are not just another classifier, they represent the beginning of a fundamental shift in how we write software.',
+    type: ContentType.BLOG,
+    url: 'https://karpathy.medium.com/software-2-0-a64152b37c35',
+    thumbnail: 'https://miro.medium.com/v2/resize:fit:1400/format:webp/1*4b3N3tD6Bv_F6fT2tM3vEg.png',
+    duration: '10m read',
+    tags: ['Philosophy', 'Software Engineering']
+  },
   // INTERMISSION: Computer Vision (Justin Johnson)
   // Essential before WaveNet because WaveNet uses Dilated Convolutions
   {
@@ -135,6 +145,16 @@ export const CURRICULUM: Lesson[] = [
     thumbnail: 'https://i.ytimg.com/vi/zduSFxRajkE/hqdefault.jpg',
     duration: '2h 13m',
     tags: ['Tokenizer', 'Unicode', 'BPE']
+  },
+  {
+    id: 'blog-4',
+    title: 'A Recipe for Training Neural Networks',
+    description: 'Practical advice on training NNs. "The first step is to inspect your data." A must-read for practitioners.',
+    type: ContentType.BLOG,
+    url: 'http://karpathy.github.io/2019/04/25/recipe/',
+    thumbnail: 'https://i.imgur.com/Jv3v3kM.png', // Placeholder or generic neural net image
+    duration: '25m read',
+    tags: ['Practical', 'Debugging', 'Training']
   },
   {
     id: 'lesson-9',

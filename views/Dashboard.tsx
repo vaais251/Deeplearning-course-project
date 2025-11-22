@@ -92,7 +92,8 @@ export const Dashboard: React.FC<DashboardProps> = ({ progress, onSelectLesson }
                     
                     <div className="flex flex-wrap items-center gap-4 pt-2">
                         <button className="bg-white text-black px-8 py-4 rounded-xl font-bold shadow-lg group-hover:bg-rose-50 group-hover:scale-105 transition-all flex items-center gap-3">
-                            <PlayCircle fill="currentColor" size={20} /> Resume Learning
+                            {nextLesson.type === ContentType.VIDEO ? <PlayCircle fill="currentColor" size={20} /> : <FileText size={20} />}
+                            Resume Learning
                         </button>
                         <div className="flex items-center gap-3 px-4 py-2 bg-black/40 rounded-lg backdrop-blur-md border border-white/10 text-gray-300 text-sm">
                             <span className="font-mono">{nextLesson.duration}</span>
@@ -104,7 +105,7 @@ export const Dashboard: React.FC<DashboardProps> = ({ progress, onSelectLesson }
                 
                 {/* Play Button Visual */}
                 <div className="hidden md:flex items-center justify-center w-24 h-24 rounded-full bg-white/10 backdrop-blur-md border border-white/20 group-hover:scale-110 transition-transform duration-500 group-hover:bg-rose-500 group-hover:border-rose-400">
-                    <Play fill="white" className="w-10 h-10 text-white ml-1" />
+                    {nextLesson.type === ContentType.VIDEO ? <Play fill="white" className="w-10 h-10 text-white ml-1" /> : <BookOpen className="w-10 h-10 text-white" />}
                 </div>
             </div>
         </div>
@@ -125,7 +126,7 @@ export const Dashboard: React.FC<DashboardProps> = ({ progress, onSelectLesson }
       <div className="space-y-8">
         <div className="flex items-center justify-between">
              <h3 className="text-2xl font-bold text-white flex items-center gap-3">
-                <BookOpen className="text-rose-500" /> Full Curriculum
+                <BookOpen className="text-rose-500" /> Timeline
              </h3>
              <div className="text-sm text-gray-500 font-mono bg-[#161616] px-3 py-1 rounded-lg border border-[#2d2d2d]">
                 {completedCount} / {totalCount} MODULES
