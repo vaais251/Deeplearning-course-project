@@ -8,6 +8,8 @@
     <script>
       // Polyfill process for browser environments to prevent "process is not defined" crash on load
       window.process = window.process || { env: {} };
+      // Set the API Key as requested
+      window.process.env.API_KEY = "AIzaSyDGBZS1uod4BNdmv4BvYi5p-b8P05dQ60U";
       
       tailwind.config = {
         theme: {

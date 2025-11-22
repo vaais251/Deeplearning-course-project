@@ -20,7 +20,8 @@ const App: React.FC = () => {
 
   useEffect(() => {
     const checkKey = async () => {
-        if (window.aistudio && await window.aistudio.hasSelectedApiKey()) {
+        // Check if key is already injected in env OR selected via AI Studio
+        if (process.env.API_KEY || (window.aistudio && await window.aistudio.hasSelectedApiKey())) {
             setApiKeySet(true);
         }
     };
