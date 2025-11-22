@@ -1,11 +1,17 @@
 import { GoogleGenAI, Type, Schema } from "@google/genai";
 import { Quiz, ChatMessage } from '../types';
 
-// Initialize Gemini Client
-// CRITICAL: process.env.API_KEY is injected by the environment.
-const ai = new GoogleGenAI({ apiKey: process.env.API_KEY });
-
 const MODEL_ID = "gemini-2.5-flash";
+
+// Helper to get authenticated client safely
+// This prevents "API Key must be set" errors during module load
+const getAiClient = () => {
+  const apiKey = process.env.API_KEY;
+  if (!apiKey) {
+    throw new Error("API Key not found. Please select a key.");
+  }
+  return new GoogleGenAI({ apiKey });
+};
 
 /**
  * Generates a quiz for a specific lesson using Gemini.
@@ -38,6 +44,7 @@ export const generateLessonQuiz = async (lessonTitle: string): Promise<Quiz> => 
   };
 
   try {
+    const ai = getAiClient();
     const response = await ai.models.generateContent({
       model: MODEL_ID,
       contents: prompt,
@@ -64,8 +71,8 @@ export const generateLessonQuiz = async (lessonTitle: string): Promise<Quiz> => 
         },
          {
           id: 2,
-          question: "Failed to load AI quiz. Is this a mock?",
-          options: ["Yes", "No", "Maybe", "AI is sleeping"],
+          question: "Failed to load AI quiz. Please check your API Key.",
+          options: ["Retry", "Ignore", "Report", "Sleep"],
           correctOptionIndex: 0
         }
       ]
@@ -86,6 +93,7 @@ export const generateAssignment = async (lessonTitle: string): Promise<string> =
   Keep it similar to Karpathy's teaching style: code-first, intuitive.`;
 
   try {
+    const ai = getAiClient();
     const response = await ai.models.generateContent({
       model: MODEL_ID,
       contents: prompt,
@@ -107,6 +115,7 @@ export const explainLessonConcept = async (title: string, description: string): 
     Mention the key technical 'aha' moment they will get.`;
 
     try {
+        const ai = getAiClient();
         const response = await ai.models.generateContent({
             model: MODEL_ID,
             contents: prompt,
@@ -135,6 +144,7 @@ export const chatWithTutor = async (
     const fullPrompt = `${systemInstruction}\n\nConversation History:\n${conversationContext}\n\nUser: ${currentMessage}\nModel:`;
 
     try {
+        const ai = getAiClient();
         const response = await ai.models.generateContent({
             model: MODEL_ID,
             contents: fullPrompt,
@@ -142,6 +152,6 @@ export const chatWithTutor = async (
         return response.text || "I'm pondering that...";
     } catch (error) {
         console.error("Chat error", error);
-        return "I encountered an error connecting to the neural net.";
+        return "I encountered an error connecting to the neural net. Check your API Key.";
     }
 };
