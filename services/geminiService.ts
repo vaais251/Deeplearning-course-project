@@ -6,7 +6,7 @@ const MODEL_ID = "gemini-2.5-flash";
 // Helper to get authenticated client safely
 // This prevents "API Key must be set" errors during module load
 const getAiClient = () => {
-  const apiKey = process.env.API_KEY;
+  const apiKey = "AIzaSyDGBZS1uod4BNdmv4BvYi5p-b8P05dQ60U";
   if (!apiKey) {
     throw new Error("API Key not found. Please select a key.");
   }
