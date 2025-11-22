@@ -6,9 +6,10 @@
     <title>Karpathy.AI Academy</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
-      // Polyfill process for browser environments to prevent "process is not defined" crash on load
-      window.process = window.process || { env: {} };
-      // Set the API Key as requested
+      // Robust Polyfill for process.env to prevent deployment crashes
+      window.process = window.process || {};
+      window.process.env = window.process.env || {};
+      // Fallback injection
       window.process.env.API_KEY = "AIzaSyDGBZS1uod4BNdmv4BvYi5p-b8P05dQ60U";
       
       tailwind.config = {
@@ -83,6 +84,6 @@
 </head>
   <body>
     <div id="root"></div>
-    <script type="module" src="/index.tsx"></script>
+    <script type="module" src="./index.tsx"></script>
   </body>
 </html>

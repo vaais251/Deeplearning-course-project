@@ -1,14 +1,28 @@
-import { GoogleGenAI, Type, Schema } from "@google/genai";
+import { GoogleGenAI, Type } from "@google/genai";
 import { Quiz, ChatMessage } from '../types';
 
 const MODEL_ID = "gemini-2.5-flash";
+const HARDCODED_KEY = "AIzaSyDGBZS1uod4BNdmv4BvYi5p-b8P05dQ60U";
 
 // Helper to get authenticated client safely
-// This prevents "API Key must be set" errors during module load
 const getAiClient = () => {
-  const apiKey = process.env.API_KEY;
+  // 1. Try safe access to window.process (setup by index.html)
+  // 2. Fallback to global process if defined (Node/Build env)
+  // 3. Fallback to hardcoded key provided by user
+  let apiKey = HARDCODED_KEY;
+
+  try {
+    if (typeof window !== 'undefined' && (window as any).process?.env?.API_KEY) {
+      apiKey = (window as any).process.env.API_KEY;
+    } else if (typeof process !== 'undefined' && process.env?.API_KEY) {
+      apiKey = process.env.API_KEY;
+    }
+  } catch (e) {
+    // Ignore env access errors
+  }
+
   if (!apiKey) {
-    throw new Error("API Key not found. Please select a key.");
+    throw new Error("API Key not found.");
   }
   return new GoogleGenAI({ apiKey });
 };
@@ -20,7 +34,8 @@ export const generateLessonQuiz = async (lessonTitle: string): Promise<Quiz> => 
   const prompt = `Create a challenging 3-question multiple choice quiz for the deep learning lesson titled: "${lessonTitle}". 
   Focus on conceptual understanding and technical details taught by Andrej Karpathy.`;
 
-  const quizSchema: Schema = {
+  // Define schema without importing the Type interface to avoid potential build issues with strict types
+  const quizSchema = {
     type: Type.OBJECT,
     properties: {
       questions: {
@@ -71,7 +86,7 @@ export const generateLessonQuiz = async (lessonTitle: string): Promise<Quiz> => 
         },
          {
           id: 2,
-          question: "Failed to load AI quiz. Please check your API Key.",
+          question: "Failed to load AI quiz. Please check your connection.",
           options: ["Retry", "Ignore", "Report", "Sleep"],
           correctOptionIndex: 0
         }
@@ -101,7 +116,7 @@ export const generateAssignment = async (lessonTitle: string): Promise<string> =
     return response.text || "Could not generate assignment.";
   } catch (error) {
     console.error("Assignment gen error", error);
-    return "## Error \n\nUnable to generate assignment at this time. Please check your API key or try again.";
+    return "## Error \n\nUnable to generate assignment at this time. Please check your API key or internet connection.";
   }
 };
 
@@ -152,6 +167,6 @@ export const chatWithTutor = async (
         return response.text || "I'm pondering that...";
     } catch (error) {
         console.error("Chat error", error);
-        return "I encountered an error connecting to the neural net. Check your API Key.";
+        return "I encountered an error connecting to the neural net.";
     }
 };
