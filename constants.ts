@@ -4,6 +4,16 @@ import { Lesson, ContentType } from './types';
 // interleaving Computer Vision concepts (Justin Johnson) where they fit architecturally (before WaveNet).
 export const CURRICULUM: Lesson[] = [
   {
+    id: 'blog-0',
+    title: 'Hacker\'s Guide to Neural Networks',
+    description: 'The legendary introductory post. "We will write a Neural Network in Python. We will not use any Deep Learning libraries." The perfect precursor.',
+    type: ContentType.BLOG,
+    url: 'http://karpathy.github.io/neuralnets/',
+    thumbnail: 'https://karpathy.github.io/assets/neuralnets/circuit.png',
+    duration: '25m read',
+    tags: ['Intro', 'Python', 'Circuit']
+  },
+  {
     id: 'lesson-1',
     title: 'Micrograd: Backprop on Scalars',
     description: 'The absolute foundation. Building Micrograd: A tiny scalar-valued autograd engine and a neural net on top of it.',
@@ -104,6 +114,36 @@ export const CURRICULUM: Lesson[] = [
     thumbnail: 'https://i.ytimg.com/vi/pSH7_6hK970/hqdefault.jpg',
     duration: '1h 15m',
     tags: ['ResNet', 'VGG', 'Architecture']
+  },
+  {
+    id: 'blog-cv-extra',
+    title: 'Competing against a ConvNet on ImageNet',
+    description: 'A fascinating experiment where Karpathy manually classified ImageNet images to benchmark human performance against state-of-the-art CNNs.',
+    type: ContentType.BLOG,
+    url: 'http://karpathy.github.io/2014/09/02/what-i-learned-from-competing-against-a-convnet-on-imagenet/',
+    thumbnail: 'https://karpathy.github.io/assets/imagenet/screen.jpeg',
+    duration: '20m read',
+    tags: ['CV', 'ImageNet', 'Human Benchmark']
+  },
+  {
+    id: 'blog-rl-1',
+    title: 'Deep Reinforcement Learning: Pong from Pixels',
+    description: 'A classic. We build a Policy Gradient agent from scratch to play Pong. Essential for understanding modern RLHF.',
+    type: ContentType.BLOG,
+    url: 'http://karpathy.github.io/2016/05/31/rl/',
+    thumbnail: 'https://karpathy.github.io/assets/rl/pong.gif',
+    duration: '30m read',
+    tags: ['RL', 'Policy Gradient', 'Pong']
+  },
+  {
+    id: 'blog-rl-2',
+    title: 'AlphaGo, in context',
+    description: 'An accessible explanation of how AlphaGo works, mixing Policy Gradients with Monte Carlo Tree Search (MCTS).',
+    type: ContentType.BLOG,
+    url: 'http://karpathy.github.io/2016/03/09/alphago/',
+    thumbnail: 'https://karpathy.github.io/assets/alphago/mcts.png',
+    duration: '25m read',
+    tags: ['RL', 'AlphaGo', 'MCTS']
   },
   // Back to Karpathy
   {
