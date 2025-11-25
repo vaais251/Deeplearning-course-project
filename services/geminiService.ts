@@ -5,15 +5,16 @@ const MODEL_ID = "gemini-2.5-flash";
 
 // Helper to get authenticated client safely
 const getAiClient = () => {
-  // strictly use process.env.API_KEY as configured in the environment (e.g. Vercel)
-  const apiKey = process.env.API_KEY;
+  // Support for Vite (Vercel) using import.meta.env.VITE_API_KEY
+  // We use (import.meta as any) to bypass strict TypeScript checks on the 'env' property 
+  // if the vite-env.d.ts definitions are missing.
+  const apiKey = (import.meta as any).env?.VITE_API_KEY || process.env.API_KEY;
 
   if (!apiKey) {
-    console.error("API Key not found in environment variables.");
+    console.warn("API Key is missing. For Vite/Vercel, set VITE_API_KEY environment variable.");
   }
-  
-  // Use the API key exclusively from the environment variable
-  return new GoogleGenAI({ apiKey: apiKey || '' });
+
+  return new GoogleGenAI({ apiKey: apiKey || "" });
 };
 
 /**
@@ -75,7 +76,7 @@ export const generateLessonQuiz = async (lessonTitle: string): Promise<Quiz> => 
         },
          {
           id: 2,
-          question: "Failed to load AI quiz. Please check your connection.",
+          question: "Failed to load AI quiz. Please check your connection and API Key.",
           options: ["Retry", "Ignore", "Report", "Sleep"],
           correctOptionIndex: 0
         }
