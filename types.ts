@@ -18,6 +18,8 @@ export interface UserProgress {
   completedLessonIds: string[];
   currentLessonId: string | null;
   quizScores: Record<string, number>; // lessonId -> score
+  streak: number;
+  lastCompletionDate: string | null;
 }
 
 export interface QuizQuestion {
@@ -40,5 +42,6 @@ export interface ChatMessage {
 export enum TabState {
   OVERVIEW = 'OVERVIEW',
   ASSIGNMENT = 'ASSIGNMENT',
-  QUIZ = 'QUIZ'
+  QUIZ = 'QUIZ',
+  NOTES = 'NOTES'
 }

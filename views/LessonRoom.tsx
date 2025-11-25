@@ -2,16 +2,19 @@ import React, { useState, useEffect } from 'react';
 import ReactMarkdown from 'react-markdown';
 import { Lesson, TabState, Quiz, ContentType } from '../types';
 import { ChatInterface } from '../components/ChatInterface';
+import { Notes } from '../components/Notes';
 import { generateLessonQuiz, generateAssignment } from '../services/geminiService';
-import { CheckCircle, PlayCircle, Code, BrainCircuit, ChevronLeft, Loader2, ExternalLink, AlertTriangle, MonitorPlay, HelpCircle, RefreshCw } from 'lucide-react';
+import { CheckCircle, PlayCircle, Code, BrainCircuit, ChevronLeft, Loader2, ExternalLink, AlertTriangle, MonitorPlay, HelpCircle, RefreshCw, FileText } from 'lucide-react';
+import { useStore } from '../services/store';
 
 interface LessonRoomProps {
   lesson: Lesson;
-  onComplete: (score: number) => void;
   onBack: () => void;
 }
 
-export const LessonRoom: React.FC<LessonRoomProps> = ({ lesson, onComplete, onBack }) => {
+export const LessonRoom: React.FC<LessonRoomProps> = ({ lesson, onBack }) => {
+  const { handleLessonComplete } = useStore();
+  const onComplete = (score: number) => handleLessonComplete(score);
   const [activeTab, setActiveTab] = useState<TabState>(TabState.OVERVIEW);
   const [quiz, setQuiz] = useState<Quiz | null>(null);
   const [assignment, setAssignment] = useState<string>('');
@@ -228,6 +231,12 @@ export const LessonRoom: React.FC<LessonRoomProps> = ({ lesson, onComplete, onBa
                     >
                         <BrainCircuit size={16} /> Quiz
                     </button>
+                    <button
+                        onClick={() => loadTabContent(TabState.NOTES)}
+                        className={`flex-1 py-4 text-sm font-medium border-b-2 transition-colors flex items-center justify-center gap-2 ${activeTab === TabState.NOTES ? 'border-rose-500 text-white bg-white/5' : 'border-transparent text-gray-500 hover:text-gray-300'}`}
+                    >
+                        <FileText size={16} /> Notes
+                    </button>
                 </div>
 
                 {/* Tab Content Area */}
@@ -247,6 +256,12 @@ export const LessonRoom: React.FC<LessonRoomProps> = ({ lesson, onComplete, onBa
                                     ))}
                                 </div>
                             </div>
+                        </div>
+                    )}
+
+                    {activeTab === TabState.NOTES && (
+                        <div className="animate-fade-in max-w-3xl mx-auto">
+                            <Notes lessonTitle={lesson.title} />
                         </div>
                     )}
 

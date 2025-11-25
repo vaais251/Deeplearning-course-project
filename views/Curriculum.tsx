@@ -3,12 +3,13 @@ import { CURRICULUM } from '../constants';
 import { Lesson, ContentType, UserProgress } from '../types';
 import { PlayCircle, FileText, CheckCircle, Lock, Search, Filter, Video, BookOpen } from 'lucide-react';
 
-interface CurriculumProps {
-  progress: UserProgress;
-  onSelectLesson: (id: string) => void;
-}
+import { useStore } from '../services/store';
 
-export const Curriculum: React.FC<CurriculumProps> = ({ progress, onSelectLesson }) => {
+interface CurriculumProps {}
+
+export const Curriculum: React.FC<CurriculumProps> = () => {
+  const { progress, handleSelectLesson } = useStore();
+  const onSelectLesson = (id: string) => handleSelectLesson(id);
   const [filter, setFilter] = useState<'ALL' | 'VIDEO' | 'BLOG'>('ALL');
   const [search, setSearch] = useState('');
 

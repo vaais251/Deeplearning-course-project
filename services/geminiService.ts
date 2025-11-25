@@ -170,3 +170,18 @@ export const chatWithTutor = async (
         return "I encountered an error connecting to the neural net.";
     }
 };
+
+export const summarizeNotes = async (notes: string): Promise<string> => {
+    const prompt = `Please summarize the following notes in a few key bullet points:\n\n${notes}`;
+
+    try {
+        const ai = getAiClient();
+        const response = await ai.models.generateContent({
+            model: MODEL_ID,
+            contents: prompt,
+        });
+        return response.text || "Could not generate a summary.";
+    } catch (e) {
+        return "Error summarizing notes. Please check your connection.";
+    }
+};

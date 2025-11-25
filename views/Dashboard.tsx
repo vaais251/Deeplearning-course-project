@@ -3,13 +3,15 @@ import { Lesson, UserProgress, ContentType } from '../types';
 import { CURRICULUM } from '../constants';
 import { Play, FileText, CheckCircle, Lock, BrainCircuit, Sparkles, ChevronRight, Video, BookOpen, PlayCircle } from 'lucide-react';
 import { explainLessonConcept } from '../services/geminiService';
+import { Streaks } from '../components/Streaks';
 
-interface DashboardProps {
-  progress: UserProgress;
-  onSelectLesson: (id: string) => void;
-}
+import { useStore } from '../services/store';
 
-export const Dashboard: React.FC<DashboardProps> = ({ progress, onSelectLesson }) => {
+interface DashboardProps {}
+
+export const Dashboard: React.FC<DashboardProps> = () => {
+  const { progress, handleSelectLesson } = useStore();
+  const onSelectLesson = (id: string) => handleSelectLesson(id);
   const completedCount = progress.completedLessonIds.length;
   const totalCount = CURRICULUM.length;
   const percentage = Math.round((completedCount / totalCount) * 100);
@@ -65,6 +67,9 @@ export const Dashboard: React.FC<DashboardProps> = ({ progress, onSelectLesson }
                 >
                     <div className="absolute inset-0 bg-white/20 animate-[pulse_2s_infinite]"></div>
                 </div>
+            </div>
+            <div className="mt-4">
+                <Streaks streak={progress.streak} />
             </div>
         </div>
       </header>
