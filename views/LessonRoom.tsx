@@ -3,7 +3,7 @@ import ReactMarkdown from 'react-markdown';
 import { Lesson, TabState, Quiz, ContentType } from '../types';
 import { ChatInterface } from '../components/ChatInterface';
 import { generateLessonQuiz, generateAssignment } from '../services/geminiService';
-import { CheckCircle, PlayCircle, Code, BrainCircuit, ChevronLeft, Loader2, ExternalLink, AlertTriangle, MonitorPlay, HelpCircle, RefreshCw } from 'lucide-react';
+import { CheckCircle, PlayCircle, Code, BrainCircuit, ChevronLeft, Loader2, ExternalLink, AlertTriangle, MonitorPlay, HelpCircle, RefreshCw, Terminal, Clock, Award, FileCode, CheckSquare, Save, BookOpen } from 'lucide-react';
 
 interface LessonRoomProps {
   lesson: Lesson;
@@ -98,9 +98,10 @@ export const LessonRoom: React.FC<LessonRoomProps> = ({ lesson, onComplete, onBa
       setVideoError(false);
       setShowVideo(false);
       setIframeKey(k => k + 1);
-      // Small delay to allow UI to reset before trying again
       setTimeout(() => setShowVideo(true), 100);
   };
+
+  const isMediumLink = lesson.url.includes('medium.com');
 
   return (
     <div className="h-screen flex flex-col bg-[#0f0f0f]">
@@ -118,7 +119,7 @@ export const LessonRoom: React.FC<LessonRoomProps> = ({ lesson, onComplete, onBa
             {/* Left Panel: Content + Tabs */}
             <div className="flex-1 flex flex-col min-w-0 overflow-y-auto custom-scrollbar">
                 {/* Video/Blog Area */}
-                <div className="w-full bg-black aspect-video flex items-center justify-center relative group bg-[#111]">
+                <div className={`w-full bg-black relative group bg-[#111] ${lesson.type === ContentType.VIDEO ? 'aspect-video' : 'h-[85vh] flex-shrink-0'}`}>
                     {lesson.type === ContentType.VIDEO ? (
                         !videoError ? (
                             showVideo ? (
@@ -158,12 +159,11 @@ export const LessonRoom: React.FC<LessonRoomProps> = ({ lesson, onComplete, onBa
                                 </button>
                             )
                         ) : (
-                            /* Fallback UI if iframe fails */
-                            <div className="text-center p-8 max-w-lg bg-[#111] rounded-2xl border border-[#2d2d2d] shadow-2xl animate-fade-in z-20">
+                            <div className="text-center p-8 max-w-lg bg-[#111] rounded-2xl border border-[#2d2d2d] shadow-2xl animate-fade-in z-20 absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2">
                                 <AlertTriangle className="w-12 h-12 text-yellow-500 mx-auto mb-4" />
                                 <h3 className="text-xl font-bold text-white mb-2">Video Playback Issue</h3>
                                 <p className="text-gray-400 mb-6 text-sm leading-relaxed">
-                                    The embedded player encountered a configuration error (Code 153). This usually happens due to browser privacy settings.
+                                    The embedded player encountered a configuration error. This usually happens due to browser privacy settings.
                                 </p>
                                 <div className="space-y-3">
                                     <a 
@@ -184,16 +184,51 @@ export const LessonRoom: React.FC<LessonRoomProps> = ({ lesson, onComplete, onBa
                             </div>
                         )
                     ) : (
-                        <div className="p-8 text-center relative z-10">
-                            <h2 className="text-3xl font-bold text-white mb-4">{lesson.title}</h2>
-                            <p className="text-gray-300 mb-8 text-lg max-w-xl mx-auto">Required Reading Assignment</p>
-                            <a href={lesson.url} target="_blank" rel="noreferrer" className="bg-rose-600 text-white px-8 py-4 rounded-xl font-bold hover:bg-rose-700 transition-colors inline-flex items-center gap-2 shadow-lg shadow-rose-900/20">
-                                Open Article <ExternalLink size={20} />
-                            </a>
+                        // BLOG / ARTICLE VIEW
+                        <div className="w-full h-full relative bg-[#1a1a1a] flex flex-col">
+                            {isMediumLink ? (
+                                <div className="flex-1 flex flex-col items-center justify-center p-8 text-center bg-[#161616] border-b border-[#2d2d2d]">
+                                    <div className="w-20 h-20 bg-white rounded-full flex items-center justify-center mb-6 shadow-xl">
+                                         <BookOpen size={32} className="text-black" />
+                                    </div>
+                                    <h3 className="text-2xl font-bold text-white mb-3">Hosted on Medium</h3>
+                                    <p className="text-gray-400 max-w-md mb-8 text-lg">
+                                        This article is hosted on Medium, which prevents embedding in other applications.
+                                    </p>
+                                    <a 
+                                        href={lesson.url} 
+                                        target="_blank" 
+                                        rel="noreferrer" 
+                                        className="bg-white text-black px-8 py-3 rounded-xl font-bold hover:bg-gray-200 transition-colors flex items-center gap-2 shadow-lg hover:scale-105 transform duration-200"
+                                    >
+                                        <ExternalLink size={18} /> Read Article on Medium
+                                    </a>
+                                </div>
+                            ) : (
+                                <iframe 
+                                    src={lesson.url}
+                                    className="w-full h-full block bg-white"
+                                    title={lesson.title}
+                                    sandbox="allow-same-origin allow-scripts allow-popups allow-forms"
+                                />
+                            )}
+                            
+                            {!isMediumLink && (
+                                <div className="absolute top-4 right-6 z-20">
+                                    <a 
+                                        href={lesson.url} 
+                                        target="_blank" 
+                                        rel="noreferrer" 
+                                        className="bg-black/80 text-white px-4 py-2 rounded-lg text-xs font-bold shadow-lg hover:bg-black flex items-center gap-2 border border-white/10 backdrop-blur-md opacity-70 hover:opacity-100 transition-all"
+                                    >
+                                        <ExternalLink size={14} /> Open in New Tab
+                                    </a>
+                                </div>
+                            )}
                         </div>
                     )}
 
-                    {/* Manual Fallback Button (Absolute positioned, always available when video is showing) */}
+                    {/* Manual Fallback Button for Video */}
                     {lesson.type === ContentType.VIDEO && !videoError && showVideo && (
                         <button 
                             onClick={() => setVideoError(true)}
@@ -201,10 +236,6 @@ export const LessonRoom: React.FC<LessonRoomProps> = ({ lesson, onComplete, onBa
                         >
                             <HelpCircle size={12} /> Player Error?
                         </button>
-                    )}
-
-                    {lesson.type === ContentType.BLOG && (
-                        <img src={lesson.thumbnail} alt="bg" className="absolute inset-0 w-full h-full object-cover opacity-30 blur-md" />
                     )}
                 </div>
 
@@ -220,7 +251,7 @@ export const LessonRoom: React.FC<LessonRoomProps> = ({ lesson, onComplete, onBa
                         onClick={() => loadTabContent(TabState.ASSIGNMENT)}
                         className={`flex-1 py-4 text-sm font-medium border-b-2 transition-colors flex items-center justify-center gap-2 ${activeTab === TabState.ASSIGNMENT ? 'border-rose-500 text-white bg-white/5' : 'border-transparent text-gray-500 hover:text-gray-300'}`}
                     >
-                        <Code size={16} /> Assignment
+                        <Code size={16} /> Lab Assignment
                     </button>
                     <button 
                         onClick={() => loadTabContent(TabState.QUIZ)}
@@ -231,9 +262,9 @@ export const LessonRoom: React.FC<LessonRoomProps> = ({ lesson, onComplete, onBa
                 </div>
 
                 {/* Tab Content Area */}
-                <div className="p-6 flex-1 bg-[#0f0f0f]">
+                <div className="flex-1 bg-[#0f0f0f]">
                     {activeTab === TabState.OVERVIEW && (
-                        <div className="space-y-6 animate-fade-in max-w-3xl mx-auto">
+                        <div className="p-6 space-y-6 animate-fade-in max-w-3xl mx-auto">
                             <div>
                                 <h1 className="text-3xl font-bold text-white mb-2">{lesson.title}</h1>
                                 <p className="text-gray-400 leading-relaxed text-lg">{lesson.description}</p>
@@ -251,20 +282,104 @@ export const LessonRoom: React.FC<LessonRoomProps> = ({ lesson, onComplete, onBa
                     )}
 
                     {activeTab === TabState.ASSIGNMENT && (
-                        <div className="prose prose-invert max-w-3xl mx-auto animate-fade-in">
-                            {loadingContent ? (
-                                <div className="flex flex-col items-center justify-center py-20 gap-4 text-gray-400">
-                                    <Loader2 className="animate-spin w-10 h-10 text-rose-500" /> 
-                                    <p>Designing a coding challenge for you...</p>
+                        <div className="flex flex-col h-full bg-[#0f0f0f] animate-fade-in">
+                            {/* Lab Toolbar */}
+                            <div className="flex items-center justify-between px-6 py-3 bg-[#1a1a1a] border-b border-[#2d2d2d] sticky top-0 z-10">
+                                <div className="flex items-center gap-4">
+                                    <div className="flex items-center gap-2 text-rose-400">
+                                        <Terminal size={18} />
+                                        <span className="font-bold tracking-wide text-sm">JUPYTER LAB</span>
+                                    </div>
+                                    <div className="h-4 w-[1px] bg-[#333]"></div>
+                                    <div className="flex items-center gap-2 text-gray-400 text-xs">
+                                        <Save size={12} />
+                                        <span>Autosaved</span>
+                                    </div>
                                 </div>
-                            ) : (
-                                <ReactMarkdown>{assignment}</ReactMarkdown>
-                            )}
+                                <div className="flex items-center gap-3">
+                                    <div className="hidden md:block text-xs font-mono text-gray-500 mr-2 px-2 py-1 bg-black rounded border border-[#333]">Kernel: Python 3.10</div>
+                                    <button className="bg-[#2d2d2d] hover:bg-[#3d3d3d] text-white px-4 py-1.5 rounded-lg text-sm font-medium transition-colors border border-white/5 flex items-center gap-2">
+                                        <PlayCircle size={14} /> Run All
+                                    </button>
+                                    <button className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-1.5 rounded-lg text-sm font-medium transition-colors shadow-lg shadow-blue-900/20 flex items-center gap-2">
+                                        <CheckSquare size={14} /> Submit
+                                    </button>
+                                </div>
+                            </div>
+
+                            <div className="flex-1 overflow-y-auto custom-scrollbar p-4 md:p-8">
+                                <div className="max-w-4xl mx-auto bg-[#161616] border border-[#2d2d2d] rounded-xl shadow-2xl overflow-hidden min-h-[500px]">
+                                    {/* Assignment Header */}
+                                    <div className="bg-[#1f1f1f] border-b border-[#2d2d2d] p-6 md:p-8 pb-6">
+                                        <div className="flex flex-col md:flex-row justify-between items-start mb-4 gap-4">
+                                            <h1 className="text-2xl md:text-3xl font-bold text-white leading-tight">Lab: {lesson.title}</h1>
+                                            <div className="bg-green-900/20 text-green-400 border border-green-500/30 px-3 py-1 rounded text-xs font-bold uppercase tracking-wide">
+                                                Graded Assignment
+                                            </div>
+                                        </div>
+                                        <div className="flex flex-wrap gap-4 md:gap-8 text-sm text-gray-400 pt-2">
+                                            <div className="flex items-center gap-2"><Clock size={16} className="text-rose-500"/> Est. Time: 45 min</div>
+                                            <div className="flex items-center gap-2"><Award size={16} className="text-yellow-500"/> 100 Points</div>
+                                            <div className="flex items-center gap-2"><FileCode size={16} className="text-blue-500"/> Python 3</div>
+                                        </div>
+                                    </div>
+                                    
+                                    {/* Content Body */}
+                                    <div className="p-6 md:p-8 prose prose-invert prose-headings:text-gray-100 prose-p:text-gray-300 prose-strong:text-white prose-a:text-rose-400 prose-code:text-rose-300 prose-pre:bg-[#0f0f0f] prose-pre:border prose-pre:border-[#333] max-w-none">
+                                        {loadingContent ? (
+                                            <div className="flex flex-col items-center justify-center py-20 gap-4">
+                                                <Loader2 className="animate-spin text-rose-500" size={32} />
+                                                <div className="flex flex-col items-center gap-1">
+                                                    <span className="text-gray-300 font-medium">Provisioning Lab Environment...</span>
+                                                    <span className="text-gray-600 text-sm">Loading PyTorch extensions</span>
+                                                </div>
+                                            </div>
+                                        ) : (
+                                            <ReactMarkdown
+                                                components={{
+                                                    code({node, inline, className, children, ...props}: any) {
+                                                        const match = /language-(\w+)/.exec(className || '')
+                                                        return !inline && match ? (
+                                                            <div className="my-6 rounded-lg overflow-hidden border border-[#333] shadow-lg">
+                                                                <div className="flex items-center justify-between px-4 py-2 bg-[#1a1a1a] border-b border-[#333]">
+                                                                    <span className="text-xs font-mono text-gray-500 uppercase">{match[1]}</span>
+                                                                    <div className="flex gap-1.5">
+                                                                        <div className="w-2.5 h-2.5 rounded-full bg-[#333]"></div>
+                                                                        <div className="w-2.5 h-2.5 rounded-full bg-[#333]"></div>
+                                                                    </div>
+                                                                </div>
+                                                                <div className="relative group">
+                                                                    <code className={`${className} block bg-[#0a0a0a] p-4 text-sm font-mono overflow-x-auto`} {...props}>
+                                                                        {children}
+                                                                    </code>
+                                                                </div>
+                                                            </div>
+                                                        ) : (
+                                                            <code className="bg-[#2d2d2d] px-1.5 py-0.5 rounded text-rose-300 font-mono text-sm border border-white/5" {...props}>
+                                                                {children}
+                                                            </code>
+                                                        )
+                                                    },
+                                                    h1: ({node, ...props}) => <h1 className="text-2xl font-bold pb-2 border-b border-[#333] mt-8 mb-4" {...props} />,
+                                                    h2: ({node, ...props}) => <h2 className="text-xl font-semibold mt-8 mb-4 text-white" {...props} />,
+                                                    blockquote: ({node, ...props}) => (
+                                                        <blockquote className="border-l-4 border-rose-500 bg-[#1f1f1f] p-4 rounded-r-lg italic text-gray-400 my-6 not-italic" {...props} />
+                                                    ),
+                                                    ul: ({node, ...props}) => <ul className="list-disc pl-6 space-y-2 my-4 text-gray-300" {...props} />,
+                                                    li: ({node, ...props}) => <li className="pl-1" {...props} />,
+                                                }}
+                                            >
+                                                {assignment}
+                                            </ReactMarkdown>
+                                        )}
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     )}
 
                     {activeTab === TabState.QUIZ && (
-                         <div className="max-w-2xl mx-auto animate-fade-in">
+                         <div className="p-6 max-w-2xl mx-auto animate-fade-in">
                              {loadingContent ? (
                                  <div className="flex flex-col items-center justify-center py-20 gap-4 text-gray-400">
                                      <Loader2 className="animate-spin w-10 h-10 text-rose-500" /> 

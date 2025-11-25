@@ -8,7 +8,7 @@ export const CURRICULUM: Lesson[] = [
     title: 'Hacker\'s Guide to Neural Networks',
     description: 'The legendary introductory post. "We will write a Neural Network in Python. We will not use any Deep Learning libraries." The perfect precursor.',
     type: ContentType.BLOG,
-    url: 'http://karpathy.github.io/neuralnets/',
+    url: 'https://karpathy.github.io/neuralnets/',
     thumbnail: 'https://karpathy.github.io/assets/neuralnets/circuit.png',
     duration: '25m read',
     tags: ['Intro', 'Python', 'Circuit']
@@ -64,6 +64,16 @@ export const CURRICULUM: Lesson[] = [
     tags: ['Optimization', 'BatchNorm']
   },
   {
+    id: 'blog-misconceptions',
+    title: 'Common Misconceptions about Neural Networks',
+    description: 'An early but timeless post addressing common errors in training, data preprocessing, and architecture selection.',
+    type: ContentType.BLOG,
+    url: 'https://karpathy.github.io/2014/07/03/common-misconceptions-about-neural-networks/',
+    thumbnail: 'https://karpathy.github.io/assets/neuralnets/network.png', 
+    duration: '15m read',
+    tags: ['Theory', 'Debugging', 'Best Practices']
+  },
+  {
     id: 'lesson-5',
     title: 'Makemore 4: Backpropagation Ninja',
     description: 'Manually implementing backpropagation for the whole MLP stack. Hardcore mode.',
@@ -84,11 +94,10 @@ export const CURRICULUM: Lesson[] = [
     tags: ['Philosophy', 'Software Engineering']
   },
   // INTERMISSION: Computer Vision (Justin Johnson)
-  // Essential before WaveNet because WaveNet uses Dilated Convolutions
   {
     id: 'lesson-cv-1',
     title: 'Foundations of Computer Vision',
-    description: 'Lecture 1 from Justin Johnson (UMich EECS 498). A high-level overview of the history and goals of Computer Vision.',
+    description: 'Lecture 1 from Justin Johnson (UMich). A high-level overview of the history and goals of Computer Vision.',
     type: ContentType.VIDEO,
     url: 'NfnWJUyUJYU', 
     thumbnail: 'https://i.ytimg.com/vi/NfnWJUyUJYU/hqdefault.jpg',
@@ -116,11 +125,31 @@ export const CURRICULUM: Lesson[] = [
     tags: ['ResNet', 'VGG', 'Architecture']
   },
   {
+    id: 'lesson-cv-4',
+    title: 'Hardware & Software',
+    description: 'Justin Johnson (UMich). GPUs vs TPUs, mixed precision, and the practical difference between eager (PyTorch) and static (TF) execution.',
+    type: ContentType.VIDEO,
+    url: 'hgX587hA1Q4',
+    thumbnail: 'https://i.ytimg.com/vi/hgX587hA1Q4/hqdefault.jpg',
+    duration: '1h 20m',
+    tags: ['GPU', 'PyTorch', 'Hardware']
+  },
+  {
+    id: 'lesson-cv-5',
+    title: 'Training Neural Networks',
+    description: 'Justin Johnson (UMich). Practical tips: Activation functions, weight initialization, learning rate schedules, and transfer learning.',
+    type: ContentType.VIDEO,
+    url: 'wEoyxE0GP2M',
+    thumbnail: 'https://i.ytimg.com/vi/wEoyxE0GP2M/hqdefault.jpg',
+    duration: '1h 18m',
+    tags: ['Training', 'Hyperparameters', 'Practical']
+  },
+  {
     id: 'blog-cv-extra',
     title: 'Competing against a ConvNet on ImageNet',
     description: 'A fascinating experiment where Karpathy manually classified ImageNet images to benchmark human performance against state-of-the-art CNNs.',
     type: ContentType.BLOG,
-    url: 'http://karpathy.github.io/2014/09/02/what-i-learned-from-competing-against-a-convnet-on-imagenet/',
+    url: 'https://karpathy.github.io/2014/09/02/what-i-learned-from-competing-against-a-convnet-on-imagenet/',
     thumbnail: 'https://karpathy.github.io/assets/imagenet/screen.jpeg',
     duration: '20m read',
     tags: ['CV', 'ImageNet', 'Human Benchmark']
@@ -130,7 +159,7 @@ export const CURRICULUM: Lesson[] = [
     title: 'Deep Reinforcement Learning: Pong from Pixels',
     description: 'A classic. We build a Policy Gradient agent from scratch to play Pong. Essential for understanding modern RLHF.',
     type: ContentType.BLOG,
-    url: 'http://karpathy.github.io/2016/05/31/rl/',
+    url: 'https://karpathy.github.io/2016/05/31/rl/',
     thumbnail: 'https://karpathy.github.io/assets/rl/pong.gif',
     duration: '30m read',
     tags: ['RL', 'Policy Gradient', 'Pong']
@@ -140,16 +169,37 @@ export const CURRICULUM: Lesson[] = [
     title: 'AlphaGo, in context',
     description: 'An accessible explanation of how AlphaGo works, mixing Policy Gradients with Monte Carlo Tree Search (MCTS).',
     type: ContentType.BLOG,
-    url: 'http://karpathy.github.io/2016/03/09/alphago/',
+    url: 'https://karpathy.github.io/2016/03/09/alphago/',
     thumbnail: 'https://karpathy.github.io/assets/alphago/mcts.png',
     duration: '25m read',
     tags: ['RL', 'AlphaGo', 'MCTS']
   },
-  // Back to Karpathy
+  
+  // Back to Sequence Modeling
+  {
+    id: 'lesson-rnn-jj',
+    title: 'Recurrent Neural Networks (RNN/LSTM)',
+    description: 'Justin Johnson (UMich). A structured introduction to RNNs, Backprop through time, LSTMs, and Image Captioning.',
+    type: ContentType.VIDEO,
+    url: 'yCC09vCHzF8',
+    thumbnail: 'https://i.ytimg.com/vi/yCC09vCHzF8/hqdefault.jpg',
+    duration: '1h 25m',
+    tags: ['RNN', 'LSTM', 'Theory']
+  },
+  {
+    id: 'blog-2',
+    title: 'The Unreasonable Effectiveness of RNNs',
+    description: 'The legendary blog post that sparked excitement about text generation before the Transformer era.',
+    type: ContentType.BLOG,
+    url: 'https://karpathy.github.io/2015/05/21/rnn-effectiveness/',
+    thumbnail: 'https://karpathy.github.io/assets/rnn/diags.jpeg',
+    duration: '20m read',
+    tags: ['RNN', 'LSTM', 'History']
+  },
   {
     id: 'lesson-6',
     title: 'Makemore 5: WaveNet',
-    description: 'Building a WaveNet architecture. We apply dilated convolutions (learned in the previous CV section) to text generation.',
+    description: 'Building a WaveNet architecture. We apply dilated convolutions (learned in the CV section) to text generation.',
     type: ContentType.VIDEO,
     url: 't3YJ5hKiMQ0',
     thumbnail: 'https://i.ytimg.com/vi/t3YJ5hKiMQ0/hqdefault.jpg',
@@ -157,14 +207,14 @@ export const CURRICULUM: Lesson[] = [
     tags: ['WaveNet', 'Convolutions', 'Dilated']
   },
   {
-    id: 'blog-2',
-    title: 'The Unreasonable Effectiveness of RNNs',
-    description: 'The legendary blog post that sparked excitement about text generation before the Transformer era.',
-    type: ContentType.BLOG,
-    url: 'http://karpathy.github.io/2015/05/21/rnn-effectiveness/',
-    thumbnail: 'https://karpathy.github.io/assets/rnn/diags.jpeg',
-    duration: '20m read',
-    tags: ['RNN', 'LSTM', 'History']
+    id: 'lesson-attn-jj',
+    title: 'Attention and Transformers',
+    description: 'Justin Johnson (UMich). The conceptual leap from RNNs to Attention mechanisms and the full Transformer architecture.',
+    type: ContentType.VIDEO,
+    url: 'YAgJfCMR9zo',
+    thumbnail: 'https://i.ytimg.com/vi/YAgJfCMR9zo/hqdefault.jpg',
+    duration: '1h 28m',
+    tags: ['Attention', 'Transformers', 'Theory']
   },
   {
     id: 'lesson-7',
@@ -191,8 +241,8 @@ export const CURRICULUM: Lesson[] = [
     title: 'A Recipe for Training Neural Networks',
     description: 'Practical advice on training NNs. "The first step is to inspect your data." A must-read for practitioners.',
     type: ContentType.BLOG,
-    url: 'http://karpathy.github.io/2019/04/25/recipe/',
-    thumbnail: 'https://i.imgur.com/Jv3v3kM.png', // Placeholder or generic neural net image
+    url: 'https://karpathy.github.io/2019/04/25/recipe/',
+    thumbnail: 'https://i.imgur.com/Jv3v3kM.png', 
     duration: '25m read',
     tags: ['Practical', 'Debugging', 'Training']
   },
